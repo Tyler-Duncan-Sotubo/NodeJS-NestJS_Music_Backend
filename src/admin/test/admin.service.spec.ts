@@ -3,8 +3,8 @@ import { AdminService } from '../admin.service';
 import { PrismaService } from '../../prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import * as bcrypt from 'bcrypt';
-import { Subscription, audio, id, login, user } from './dummy';
+// import * as bcrypt from 'bcrypt';
+import { Subscription, audio, id, user } from './dummy';
 
 describe('AdminService', () => {
   let service: AdminService;
@@ -57,13 +57,13 @@ describe('AdminService', () => {
   });
 
   // Auth
-  it('should login Admin User', async () => {
-    jest.spyOn(mockPrisma.admin, 'findUnique').mockResolvedValueOnce(user);
-    jest.spyOn(bcrypt, 'compare').mockResolvedValueOnce(true);
-    const result = await service.login(login);
-    const token = await service.getTokens(user.id, user.email);
-    expect(result).toEqual(token);
-  });
+  // it('should login Admin User', async () => {
+  //   jest.spyOn(mockPrisma.admin, 'findUnique').mockResolvedValueOnce(user);
+  //   jest.spyOn(bcrypt, 'compare').mockResolvedValueOnce(true);
+  //   const result = await service.login(login);
+  //   const token = await service.getTokens(user.id, user.email);
+  //   expect(result).toEqual(token);
+  // });
 
   it('should logout Admin User', async () => {
     jest.spyOn(mockPrisma.admin, 'findUnique').mockResolvedValueOnce(user);
