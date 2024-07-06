@@ -1,0 +1,15 @@
+export const PreSaveDto = {
+  image: 'test',
+  title: 'test',
+  artist: 'test',
+  spotify: 'test',
+  apple: 'test',
+  itunes: 'test',
+  amazon: 'test',
+  youtube: 'test',
+  tidal: 'test',
+  deezer: 'test',
+  boomPlay: 'test',
+  audioMack: 'test',
+  soundcloud: 'test',
+};

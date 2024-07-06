@@ -1,0 +1,230 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                               String               @id @default(auto()) @map("_id") @db.ObjectId
+  email                            String               @unique
+  hash                             String
+  name                             String?
+  hashedRefreshToken               String?
+  email_verified                   Boolean              @default(false)
+  emailVerificationToken           String?
+  emailVerificationTokenExpiration DateTime?
+  role                             String               @default("")
+  Token                            Token[]
+  UserInformation                  UserInformation[]
+  Audio                            audios[]
+  Video                            videos[]
+  Subscription                     Subscriptions[]
+  billingInformation               billingInformation[]
+  cardBillingInfo                  cardBillingInfo[]
+  streams                          streams[]
+  LabelArtists                     LabelArtists[]
+  LabelSubscriptions               LabelSubscriptions[]
+}
+
+model Admin {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subscriptions {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  plan      String
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+
+  User               User                 @relation(fields: [userId], references: [id])
+  LabelSubscriptions LabelSubscriptions[]
+}
+
+model billingInformation {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String @db.ObjectId
+  firstName String
+  lastName  String
+  address   String
+  city      String
+  state     String
+  country   String
+  phone     String
+
+  User User @relation(fields: [userId], references: [id])
+}
+
+model Token {
+  id                   String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId               String    @db.ObjectId
+  createdAt            DateTime  @default(now())
+  resetToken           String?
+  resetTokenExpiration DateTime?
+
+  User User @relation(fields: [userId], references: [id])
+}
+
+model UserInformation {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId               String   @db.ObjectId
+  firstName            String
+  lastName             String
+  artistName           String
+  label                String
+  phone                String
+  country              String
+  howDidYouHearAboutUs String?
+  youtube              String?
+  instagram            String?
+  twitter              String?
+  facebook             String?
+  vevo                 String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  User User @relation(fields: [userId], references: [id])
+}
+
+model audios {
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId           String    @db.ObjectId
+  title            String
+  artist           String
+  releaseDate      DateTime
+  primaryGenre     String
+  secondaryGenre   String
+  language         String
+  label            String
+  copyrightHolder  String
+  copyrightYear    String
+  productionHolder String
+  productionYear   String
+  releaseCover     String
+  releaseAudio     String?
+  releaseAudioLink String?
+  lyrics           String?
+  releaseType      String
+  status           String
+  UPC              String    @default("")
+  ISRC             String    @default("")
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  smartLink        String    @default("")
+  streams          streams[]
+
+  User User @relation(fields: [userId], references: [id])
+}
+
+model videos {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  title       String
+  releaseDate DateTime
+  link        String
+  keywords    String
+  description String
+  status      String
+  releaseType String
+  createdAt   DateTime @default(now())
+
+  User User @relation(fields: [userId], references: [id])
+}
+
+model cardBillingInfo {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  name      String
+  address   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  User User @relation(fields: [userId], references: [id])
+}
+
+model preSaveLinks {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  url        String  @unique
+  artist     String
+  title      String
+  image      String
+  itunes     String
+  spotify    String?
+  apple      String?
+  amazon     String?
+  deezer     String?
+  tidal      String?
+  youtube    String?
+  audioMack  String?
+  boomPlay   String?
+  soundcloud String?
+}
+
+model streams {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  audioId       String   @db.ObjectId
+  total_streams Int
+  week_start    String
+  week_end      String
+  apple         Json?    @default("{}")
+  spotify       Json?    @default("{}")
+  youtube       Json?    @default("{}")
+  amazon        Json?    @default("{}")
+  tidal         Json?    @default("{}")
+  deezer        Json?    @default("{}")
+  boomPlay      Json?    @default("{}")
+  tiktok        Json?    @default("{}")
+  createdAt     DateTime @default(now())
+
+  User   User   @relation(fields: [userId], references: [id])
+  audios audios @relation(fields: [audioId], references: [id])
+}
+
+model Label {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  LabelArtists       LabelArtists[]
+  LabelSubscriptions LabelSubscriptions[]
+}
+
+model LabelArtists {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  labelId  String @db.ObjectId
+  artistId String @db.ObjectId
+
+  Label Label @relation(fields: [labelId], references: [id])
+  User  User  @relation(fields: [artistId], references: [id])
+}
+
+model LabelSubscriptions {
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  labelId              String   @db.ObjectId
+  artistId             String   @db.ObjectId
+  artistSubscriptionId String   @db.ObjectId
+  createdAt            DateTime @default(now())
+
+  Label         Label         @relation(fields: [labelId], references: [id])
+  User          User          @relation(fields: [artistId], references: [id])
+  Subscriptions Subscriptions @relation(fields: [artistSubscriptionId], references: [id])
+}
