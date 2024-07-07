@@ -12,6 +12,7 @@ export const PostStreamDto = {
   deezer: '60',
   boomPlay: '70',
   tiktok: '80',
+  facebook: '90',
 };
 
 export const user = {
