@@ -58,4 +58,8 @@ export class PostStreamDto {
   @IsObject()
   @IsOptional()
   tiktok: string;
+
+  @IsObject()
+  @IsOptional()
+  facebook: string;
 }

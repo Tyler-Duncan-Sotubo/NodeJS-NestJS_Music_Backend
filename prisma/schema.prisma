@@ -190,6 +190,7 @@ model streams {
   deezer        Json?    @default("{}")
   boomPlay      Json?    @default("{}")
   tiktok        Json?    @default("{}")
+  facebook      Json?    @default("{}")
   createdAt     DateTime @default(now())
 
   User   User   @relation(fields: [userId], references: [id])
