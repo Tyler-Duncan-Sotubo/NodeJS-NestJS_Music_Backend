@@ -11,6 +11,12 @@ describe(' StreamsService', () => {
       create: jest.fn(),
       findMany: jest.fn(),
     },
+    user: {
+      findUnique: jest.fn(),
+    },
+    audios: {
+      findUnique: jest.fn(),
+    },
   };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,6 +38,8 @@ describe(' StreamsService', () => {
   // Create a test for the createStream method
   it('should call createStream method of StreamsService', async () => {
     jest.spyOn(mockPrisma.streams, 'create').mockResolvedValue(PostStreamDto);
+    jest.spyOn(mockPrisma.user, 'findUnique').mockResolvedValue({ id: 1 });
+    jest.spyOn(mockPrisma.audios, 'findUnique').mockResolvedValue({ id: 1 });
     const result = await service.createStream(PostStreamDto);
     expect(result).toEqual(PostStreamDto);
   });
