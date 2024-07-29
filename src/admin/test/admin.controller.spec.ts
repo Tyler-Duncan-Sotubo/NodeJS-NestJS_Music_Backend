@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AdminController } from '../admin.controller';
 import { AdminService } from '../admin.service';
-import { login, id, user, audio, Subscription } from './dummy';
+import { login, id, user, audio, Subscription } from '../test/dummy';
 
 describe('AdminController', () => {
   let controller: AdminController;

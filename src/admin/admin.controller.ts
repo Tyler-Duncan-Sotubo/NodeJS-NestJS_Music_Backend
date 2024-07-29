@@ -14,6 +14,7 @@ import { LoginDto, UserDto, AudioDto, SubscriptionDto } from './dto';
 @Controller('admin')
 export class AdminController {
   constructor(private adminService: AdminService) {}
+
   // Auth Logic
   @Post('login')
   @HttpCode(HttpStatus.OK)
