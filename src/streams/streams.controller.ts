@@ -23,6 +23,7 @@ export class StreamsController {
     return this.streamsService.createStream(Dto);
   }
 
+  // streams by ID
   @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.OK)
   @Get('/get-all-streams')
